@@ -1,0 +1,5 @@
+django
+datasets
+langchain
+langchain-community
+django-environ
