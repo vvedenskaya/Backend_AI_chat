@@ -3,7 +3,7 @@ from datasets import load_dataset
 from mysite.wiki.models import Article
 
 class Command(BaseCommand):
-    help = "Load wikipedia articles using HuggingFace datasets"
+    help = "Load multiple datasets using HuggingFace datasets"
 
     def add_arguments(self, parser):
         parser.add_argument("--limit", type=int, default=10)
@@ -12,21 +12,64 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         subset_name = options["subset"]
         limit = options["limit"]
-        wikipedia_data = load_dataset("wikipedia", subset_name, split=f"train[0:{limit}]")
 
-        articles_to_create = self._prepare_articles(wikipedia_data)
+        dataset_1 = load_dataset("infinite-dataset-hub/SmallTalkDialogues", split=f"train[0:{limit}]")
+        dataset_2 = load_dataset("infinite-dataset-hub/ViolenceAgainstMinorities", split=f"train[0:{limit}]")
+        dataset_3 = load_dataset("RedaAlami/hate_lgbtq_dataset", split=f"train[0:{limit}]")
+        dataset_4 = load_dataset("RedaAlami/lgbtq_dataset2", split=f"train[0:{limit}]")
+
+
+        self._process_and_save(dataset_1)
+        self._process_and_save(dataset_2)
+        self._process_and_save(dataset_3)
+        self._process_and_save(dataset_4)
+
+
+    def _process_and_save(self, dataset):
+        # Подготовка и сохранение статей
+        articles_to_create = self._prepare_articles(dataset)
         self._save_articles(articles_to_create)
 
-    def _prepare_articles(self, wikipedia_data):
+    def _prepare_articles(self, dataset):
         articles = []
-        for row in wikipedia_data:
-            print(f"{row['id']=}, {row['title']=},{row['url']=}")
-            articles.append(Article(**row))
+        for row in dataset:
+            print(f"{row['id']=}, {row['title']=}, {row['url']=}")
+            articles.append(Article(**row))  # Создаем объект статьи
         return articles
 
     def _save_articles(self, articles):
         try:
+            # Сохраняем статьи в базе данных
             Article.objects.bulk_create(articles)
-            self.stdout.write(self.style.SUCCESS(f"Saved {len(articles)} Articles"))
+            self.stdout.write(self.style.SUCCESS(f"Сохранено {len(articles)} статей"))
         except Exception as err:
-            self.stdout.write(self.style.ERROR(f"An error occurred while trying to save the articles\nException:\n\n{err}"))
+            self.stdout.write(self.style.ERROR(f"Произошла ошибка при сохранении статей:\n{err}"))
+
+
+
+
+
+
+
+
+
+
+
+
+
+        #articles_to_create = self._prepare_articles(wikipedia_data)
+        #self._save_articles(articles_to_create)
+
+    # def _prepare_articles(self, wikipedia_data):
+    #     articles = []
+    #     for row in wikipedia_data:
+    #         print(f"{row['id']=}, {row['title']=},{row['url']=}")
+    #         articles.append(Article(**row))
+    #     return articles
+    #
+    # def _save_articles(self, articles):
+    #     try:
+    #         Article.objects.bulk_create(articles)
+    #         self.stdout.write(self.style.SUCCESS(f"Saved {len(articles)} Articles"))
+    #     except Exception as err:
+    #         self.stdout.write(self.style.ERROR(f"An error occurred while trying to save the articles\nException:\n\n{err}"))

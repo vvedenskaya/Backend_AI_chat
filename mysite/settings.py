@@ -156,5 +156,5 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
+OPEN_API_KEY = env('OPEN_API_KEY')
 

@@ -10,7 +10,6 @@ from langchain.vectorstores.faiss import FAISS
 from langchain.embeddings import OpenAIEmbeddings
 from pathlib import Path
 from langchain_core.documents import Document
-from langchain_openai import OpenAIEmbeddings
 from langchain.memory import ConversationBufferMemory
 
 
@@ -42,8 +41,8 @@ class Command(BaseCommand):
 def get_qa_chain():
     """Initialize a ConversationalRetrievalChain for Q&A."""
     llm = ChatOpenAI(model_name="gpt-4", temperature=0)
-    embeddings = OpenAIEmbeddings(openai_api_key=settings.OPENAI_API_KEY)
-    retriever = FAISS.load_local("vectorstore", embeddings, allow_dangerous_deserialization = True)
+    embeddings = OpenAIEmbeddings(openai_api_key=settings.OPEN_API_KEY)
+    retriever = FAISS.load_local("vectorstore", embeddings, allow_dangerous_deserialization = True).as_retriever()
     memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
     return ConversationalRetrievalChain.from_llm(llm=llm, retriever=retriever, memory=memory)
 

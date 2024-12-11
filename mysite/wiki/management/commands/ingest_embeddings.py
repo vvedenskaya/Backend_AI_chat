@@ -8,7 +8,7 @@ from langchain.vectorstores.faiss import FAISS
 from langchain.embeddings import OpenAIEmbeddings
 from pathlib import Path
 from langchain_core.documents import Document
-from langchain_openai import OpenAIEmbeddings
+
 
 
 
