@@ -16,12 +16,11 @@ import os
 
 env = environ.Env(
     # set casting, default value
-    DEBUG=(bool, False)
+    DEBUG=False
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Take environment variables from .env file
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
@@ -33,14 +32,11 @@ DEBUG = env('DEBUG')
 # exception if SECRET_KEY not in os.environ
 SECRET_KEY = env('SECRET_KEY')
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 
-
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -86,7 +82,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
@@ -102,17 +97,17 @@ DATABASES = {
 
     # read os.environ['SQLITE_URL']
     #'extra': env.db_url(
-        #'SQLITE_URL',
-        #default='sqlite:////tmp/my-tmp-sqlite.db'
-   # )
+    #'SQLITE_URL',
+    #default='sqlite:////tmp/my-tmp-sqlite.db'
+    # )
 }
 #DATABASES = {
-    #'default': {
-     #   'ENGINE': 'django.db.backends.postgresql',
-      #'PASSWORD': 'lalala',
-       # 'HOST': '127.0.0.1',
-        #'PORT': '5432',
-   # }
+#'default': {
+#   'ENGINE': 'django.db.backends.postgresql',
+#'PASSWORD': 'lalala',
+# 'HOST': '127.0.0.1',
+#'PORT': '5432',
+# }
 #}
 
 # Password validation
@@ -133,7 +128,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
@@ -144,7 +138,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
@@ -157,4 +150,3 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 OPEN_API_KEY = env('OPEN_API_KEY')
-

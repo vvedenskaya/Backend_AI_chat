@@ -36,7 +36,6 @@ class Command(BaseCommand):
         self._save_vectorstore(path, vectorstore)
 
 
-
     def _prompt_delete_vector_database(self, path: str):
         Path(path).unlink(missing_ok=True)
         self.stdout.write(self.style.SUCCESS('Vector database deleted.'))

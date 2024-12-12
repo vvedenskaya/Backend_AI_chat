@@ -3,4 +3,4 @@ from .models import Article
 
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
-    search_fields = ["title", "text"]
+    search_fields = ["train", "text"]
